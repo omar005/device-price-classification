@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Price Prediction</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input[type="number"],
+        input[type="checkbox"],
+        button {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        button {
+            font-weight: bold;
+            padding: 8px 16px;
+        }
+
+        #predictionResult {
+            margin-top: 16px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Device Price Prediction</h1>
+    <form id="deviceForm">
+        <label for="batteryPower">Battery Power:</label>
+        <input type="number" id="batteryPower" name="batteryPower" required><br>
+
+        <label for="hasBluetooth">Has Bluetooth:</label>
+        <input type="checkbox" id="hasBluetooth" name="hasBluetooth"><br>
+
+        <label for="clockSpeed">Clock Speed:</label>
+        <input type="number" id="clockSpeed" name="clockSpeed" step="0.01" required><br>
+
+        <label for="dualSim">Dual SIM:</label>
+        <input type="checkbox" id="dualSim" name="dualSim"><br>
+
+        <label for="frontCameraMP">Front Camera MP:</label>
+        <input type="number" id="frontCameraMP" name="frontCameraMP" required><br>
+
+        <label for="has2or3or4G">Has 2G/3G/4G:</label>
+        <input type="number" id="has2or3or4G" name="has2or3or4G" required><br>
+
+        <label for="internalMemory">Internal Memory:</label>
+        <input type="number" id="internalMemory" name="internalMemory" required><br>
+
+        <label for="mobileDepth">Mobile Depth:</label>
+        <input type="number" id="mobileDepth" name="mobileDepth" step="0.01" required><br>
+
+        <label for="mobileWeight">Mobile Weight:</label>
+        <input type="number" id="mobileWeight" name="mobileWeight" step="0.01" required><br>
+
+        <label for="numberOfCores">Number of Cores:</label>
+        <input type="number" id="numberOfCores" name="numberOfCores" required><br>
+
+        <label for="primaryCameraMP">Primary Camera MP:</label>
+        <input type="number" id="primaryCameraMP" name="primaryCameraMP" required><br>
+
+        <label for="pixelDensity">Pixel Density:</label>
+        <input type="number" id="pixelDensity" name="pixelDensity" required><br>
+
+        <label for="ram">RAM:</label>
+        <input type="number" id="ram" name="ram" required><br>
+
+        <label for="diagonalScreenSize">Diagonal Screen Size:</label>
+        <input type="number" id="diagonalScreenSize" name="diagonalScreenSize" step="0.01" required><br>
+
+        <label for="talkTime">Talk Time:</label>
+        <input type="number" id="talkTime" name="talkTime" step="0.01" required><br>
+
+        <label for="hasTouchScreen">Has Touch Screen:</label>
+        <input type="checkbox" id="hasTouchScreen" name="hasTouchScreen"><br>
+
+        <label for="hasWifi">Has WiFi:</label>
+        <input type="checkbox" id="hasWifi" name="hasWifi"><br>
+
+        <button type="button" onclick="predictPrice()">Predict Price</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <script>
+	    function predictPrice() {
+		// Collect device specifications from the form
+		const batteryPower = document.getElementById('batteryPower').value.trim();
+		const clockSpeed = document.getElementById('clockSpeed').value.trim();
+		const frontCameraMP = document.getElementById('frontCameraMP').value.trim();
+		const internalMemory = document.getElementById('internalMemory').value.trim();
+		const mobileDepth = document.getElementById('mobileDepth').value.trim();
+		const mobileWeight = document.getElementById('mobileWeight').value.trim();
+		const numberOfCores = document.getElementById('numberOfCores').value.trim();
+		const primaryCameraMP = document.getElementById('primaryCameraMP').value.trim();
+		const ram = document.getElementById('ram').value.trim();
+		const talkTime = document.getElementById('talkTime').value.trim();
+		const has2or3or4G = document.getElementById('has2or3or4G').value.trim();
+		const diagonalScreenSize = document.getElementById('diagonalScreenSize').value.trim();
+		const pixelDensity = document.getElementById('pixelDensity').value.trim();
+
+		// Check if any required fields are empty
+		if (batteryPower === '' || clockSpeed === '' || frontCameraMP === '' || internalMemory === '' || 
+		    mobileDepth === '' || mobileWeight === '' || numberOfCores === '' || primaryCameraMP === '' || 
+		    ram === '' || talkTime === '' || has2or3or4G === '' || diagonalScreenSize === '' || pixelDensity === '') {
+		    // Display error message
+		    document.getElementById('predictionResult').innerText = 'Error: Please fill out all required fields.';
+		    return;
+		}
+
+		// Collect device specifications
+		const deviceData = {
+		    batteryPower: parseFloat(batteryPower),
+		    hasBluetooth: document.getElementById('hasBluetooth').checked,
+		    clockSpeed: parseFloat(clockSpeed),
+		    dualSim: document.getElementById('dualSim').checked,
+		    frontCameraMP: parseInt(frontCameraMP),
+		    internalMemory: parseInt(internalMemory),
+		    mobileDepth: parseFloat(mobileDepth),
+		    mobileWeight: parseFloat(mobileWeight),
+		    numberOfCores: parseInt(numberOfCores),
+		    primaryCameraMP: parseInt(primaryCameraMP),
+		    ram: parseInt(ram),
+		    talkTime: parseFloat(talkTime),
+		    hasTouchScreen: document.getElementById('hasTouchScreen').checked,
+		    hasWifi: document.getElementById('hasWifi').checked,
+		    has2or3or4G: parseInt(has2or3or4G),
+		    diagonalScreenSize: parseFloat(diagonalScreenSize),
+		    pixelDensity: parseInt(pixelDensity)
+		};
+
+		// Send a POST request to the Flask API
+		fetch('/predict', {
+		    method: 'POST',
+		    headers: {
+		        'Content-Type': 'application/json'
+		    },
+		    body: JSON.stringify(deviceData)
+		})
+		    .then(response => response.json())
+		    .then(data => {
+		        // Display the predicted price
+		        document.getElementById('predictionResult').innerText = 'Predicted Price: ' + data.predicted_price;
+		    })
+		    .catch(error => {
+		        console.error('Error:', error);
+		        // Display error message
+		        document.getElementById('predictionResult').innerText = 'Error: ' + error;
+		    });
+	    }
+	</script>
+
+
+</body>
+
+</html>
+

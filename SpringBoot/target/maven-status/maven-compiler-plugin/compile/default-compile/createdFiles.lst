@@ -1,0 +1,8 @@
+AppConfig.class
+RestTemplateConfig.class
+com/example/Devices/DTO/PredictedPriceResponse.class
+com/example/Devices/Service/DeviceService.class
+com/example/Devices/Entity/Device.class
+com/example/Devices/Repository/DeviceRepository.class
+com/example/Devices/Controller/DeviceController.class
+com/example/Devices/DevicesApplication.class
