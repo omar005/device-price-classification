@@ -1,7 +1,5 @@
 # Devices Price Classification System
 
-XGBoost powered ML model predicts device price ranges through a Spring Boot API.
-
 ## Overview
 
 This project implements a Devices Price Classification System consisting of two main components:
