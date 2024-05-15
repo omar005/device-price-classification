@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Price Prediction</title>
+</head>
+<body>
+    <h1>Device Price Prediction</h1>
+    <form id="deviceForm">
+        <!-- Input fields for device specifications -->
+        <!-- Battery Power -->
+        <label for="battery_power">Battery Power:</label>
+        <input type="number" id="battery_power" name="battery_power" required><br><br>
+
+        <!-- Has Bluetooth -->
+        <label for="blue">Has Bluetooth:</label>
+        <input type="checkbox" id="blue" name="blue"><br><br>
+
+        <!-- Clock Speed -->
+        <label for="clock_speed">Clock Speed:</label>
+        <input type="number" id="clock_speed" name="clock_speed" step="0.01" required><br><br>
+
+        <!-- Dual SIM -->
+        <label for="dual_sim">Dual SIM:</label>
+        <input type="checkbox" id="dual_sim" name="dual_sim"><br><br>
+
+        <!-- Front Camera MP -->
+        <label for="fc">Front Camera MP:</label>
+        <input type="number" id="fc" name="fc" required><br><br>
+
+        <!-- Internal Memory -->
+        <label for="int_memory">Internal Memory:</label>
+        <input type="number" id="int_memory" name="int_memory" required><br><br>
+
+        <!-- Mobile Depth -->
+        <label for="m_dep">Mobile Depth:</label>
+        <input type="number" id="m_dep" name="m_dep" step="0.01" required><br><br>
+
+        <!-- Mobile Weight -->
+        <label for="mobile_wt">Mobile Weight:</label>
+        <input type="number" id="mobile_wt" name="mobile_wt" step="0.01" required><br><br>
+
+        <!-- Number of Cores -->
+        <label for="n_cores">Number of Cores:</label>
+        <input type="number" id="n_cores" name="n_cores" required><br><br>
+
+        <!-- Primary Camera MP -->
+        <label for="pc">Primary Camera MP:</label>
+        <input type="number" id="pc" name="pc" required><br><br>
+
+        <!-- RAM -->
+        <label for="ram">RAM:</label>
+        <input type="number" id="ram" name="ram" required><br><br>
+
+        <!-- Talk Time -->
+        <label for="talk_time">Talk Time:</label>
+        <input type="number" id="talk_time" name="talk_time" step="0.01" required><br><br>
+
+        <!-- Has Touch Screen -->
+        <label for="touch_screen">Has Touch Screen:</label>
+        <input type="checkbox" id="touch_screen" name="touch_screen"><br><br>
+
+        <!-- Has WiFi -->
+        <label for="wifi">Has WiFi:</label>
+        <input type="checkbox" id="wifi" name="wifi"><br><br>
+
+        <!-- Combined 2G/3G/4G -->
+        <label for="combined_g">Has 2G/3G/4G:</label>
+        <select id="combined_g" name="combined_g" required>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select><br><br>
+
+        <!-- Diagonal Screen Size -->
+        <label for="screen_size">Diagonal Screen Size:</label>
+        <input type="number" id="screen_size" name="screen_size" step="0.01" required><br><br>
+
+        <!-- Pixel Density -->
+        <label for="pixel_density">Pixel Density:</label>
+        <input type="number" id="pixel_density" name="pixel_density" required><br><br>
+
+        <!-- Button to predict price -->
+        <button type="button" onclick="predictPrice()">Predict Price</button><br><br>
+
+        <!-- Button to navigate back to main page -->
+        <button onclick="navigateBack()">Back to Main Page</button><br><br>
+    </form>
+
+    <!-- Div to display prediction result -->
+    <div id="predictionResult"></div>
+
+    <!-- JavaScript function to navigate back to index.html -->
+    <script>
+        // Function to navigate back to index.html
+        function navigateBack() {
+            window.location.href = "index.html";
+        }
+
+        // Function to predict device price
+        function predictPrice() {
+            // Get data from form
+            var formData = {
+                "battery_power": parseFloat(document.getElementById("battery_power").value),
+                "blue": document.getElementById("blue").checked,
+                "clock_speed": parseFloat(document.getElementById("clock_speed").value),
+                "dual_sim": document.getElementById("dual_sim").checked,
+                "fc": parseFloat(document.getElementById("fc").value),
+                "int_memory": parseFloat(document.getElementById("int_memory").value),
+                "m_dep": parseFloat(document.getElementById("m_dep").value),
+                "mobile_wt": parseFloat(document.getElementById("mobile_wt").value),
+                "n_cores": parseInt(document.getElementById("n_cores").value),
+                "pc": parseFloat(document.getElementById("pc").value),
+                "ram": parseInt(document.getElementById("ram").value),
+                "talk_time": parseFloat(document.getElementById("talk_time").value),
+                "touch_screen": document.getElementById("touch_screen").checked,
+                "wifi": document.getElementById("wifi").checked,
+                "combined_g": parseInt(document.getElementById("combined_g").value),
+                "screen_size": parseFloat(document.getElementById("screen_size").value),
+                "pixel_density": parseInt(document.getElementById("pixel_density").value)
+            };
+
+            // Check if any required field is empty
+            for (var key in formData) {
+                if ((formData[key] === "" || isNaN(formData[key])) && document.getElementById(key).hasAttribute("required")) {
+                    alert("Please fill in all required fields with valid numerical values.");
+                    return;
+                }
+            }
+
+            // Send POST request to predict device price
+            fetch('/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display predicted price
+                document.getElementById("predictionResult").innerText = "Predicted Price: " + data.predicted_price;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

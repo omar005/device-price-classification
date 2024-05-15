@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Price by Device ID</title>
+</head>
+<body>
+    <h1>Predict Price by Device ID</h1>
+    
+    <form id="predictDeviceForm">
+        <label for="deviceId">Device ID:</label>
+        <input type="text" id="deviceId" name="deviceId" required><br><br>
+        
+        <button type="button" onclick="predictPrice()">Predict Price</button><br><br>
+        <button onclick="navigateBack()">Back to Main Page</button><br><br>
+    </form>
+
+    <div id="predictedPrice"></div>
+
+    <script>
+        /**
+         * Function to navigate back to the main page.
+         */
+        function navigateBack() {
+            window.location.href = "index.html";
+        }
+
+        /**
+         * Function to predict the price based on the device ID.
+         */
+        function predictPrice() {
+            // Get the device ID from the input field
+            var deviceId = document.getElementById("deviceId").value;
+            
+            // Send a POST request to the backend API to predict the price
+            fetch('/api/predict/' + deviceId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Extract the predicted price from the response data
+                const predictedPrice = data.predicted_price;
+                // Display the predicted price on the webpage
+                document.getElementById("predictedPrice").innerText = "Predicted Price: " + predictedPrice;
+            })
+            .catch(error => {
+                // Display an error message if prediction fails
+                console.error('Error:', error);
+                document.getElementById("predictedPrice").innerText = "Error predicting price.";
+            });
+        }
+
+    </script>
+</body>
+</html>

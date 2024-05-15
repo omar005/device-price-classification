@@ -1,0 +1,6 @@
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/DTO/PredictedPriceResponse.java
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/DevicesApplication.java
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/Entity/Device.java
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/AppConfig.java
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/Repository/DeviceRepository.java
+/home/omar/device-price-classification/SpringBoot/src/main/java/com/example/Devices/Controller/DeviceController.java

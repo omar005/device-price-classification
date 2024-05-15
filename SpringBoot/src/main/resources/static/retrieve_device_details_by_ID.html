@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve Device Details by ID</title>
+</head>
+<body>
+    <h1>Retrieve Device Details by ID</h1>
+    
+    <form id="retrieveDeviceForm">
+        <label for="deviceId">Device ID:</label>
+        <input type="text" id="deviceId" name="deviceId" required><br><br>
+        <button type="button" onclick="retrieveDeviceDetails()">Retrieve Details</button><br><br>
+        <button onclick="navigateBack()">Back to Main Page</button><br><br>
+    </form>
+
+    <div id="deviceDetails"></div>
+
+    <script>
+        // Function to navigate back to index.html
+        function navigateBack() {
+            window.location.href = "index.html";
+        }
+        function retrieveDeviceDetails() {
+            var deviceId = document.getElementById("deviceId").value;
+
+            fetch('/api/devices/' + deviceId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // Print the returned response to the console
+                // Display device details
+                document.getElementById("deviceDetails").innerHTML = `
+                    <h2>Device Details</h2>
+                    <p>ID: ${data.id}</p>
+                    <p>Battery Power: ${data.battery_power}</p>
+                    <p>Bluetooth: ${data.blue}</p>
+                    <p>Clock Speed: ${data.clock_speed}</p>
+                    <p>Dual SIM: ${data.dual_sim}</p>
+                    <p>Front Camera MP: ${data.fc}</p>
+                    <p>2G/3G/4G: ${data.combined_g}</p>
+                    <p>Internal Memory: ${data.int_memory}</p>
+                    <p>Mobile Depth: ${data.m_dep}</p>
+                    <p>Mobile Weight: ${data.mobile_wt}</p>
+                    <p>Number of Cores: ${data.n_cores}</p>
+                    <p>Primary Camera MP: ${data.pc}</p>
+                    <p>Pixel Density: ${data.pixel_density}</p>
+                    <p>RAM: ${data.ram}</p>
+                    <p>Diagonal Screen Size: ${data.screen_size}</p>
+                    <p>Talk Time: ${data.talk_time}</p>
+                    <p>Touch Screen: ${data.touch_screen}</p>
+                    <p>Wi-Fi: ${data.wifi}</p>
+                    <p>Predicted Price: ${data.predicted_price}</p>
+                    <!-- Add more details as needed -->
+                `;
+
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("deviceDetails").innerHTML = "<p>Error retrieving device details.</p>";
+            });
+        }
+
+    </script>
+</body>
+</html>
