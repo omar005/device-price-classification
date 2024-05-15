@@ -26,7 +26,7 @@ def index():
 def predict():
     # Receive JSON data from the request
     device_data = request.json
-    print("Received Data:", device_data)
+    #print("Received Data:", device_data) #uncomment to print Received Data
 
     # Check if data is empty
     if not device_data:
@@ -36,14 +36,13 @@ def predict():
         # Preprocess input data
         processed_data = preprocess_input(device_data)
 
-        print("Preprocessed Data:", processed_data)
-
         # Predict using the trained model
-        predicted_price = xgb_model.predict(processed_data)
+        predicted_price = xgb_model.predict(processed_data)[0] # Get the first prediction as a single value
         
         # Convert prediction to a list
         predicted_price = predicted_price.tolist()
 
+        #print(predicted_price) #uncomment to print predicted price
         # Return the predicted price as a JSON response
         return jsonify({"predicted_price": predicted_price})
 
