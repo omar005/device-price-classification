@@ -50,8 +50,13 @@
         <label for="frontCameraMP">Front Camera MP:</label>
         <input type="number" id="frontCameraMP" name="frontCameraMP" required><br>
 
-        <label for="has2or3or4G">Has 2G/3G/4G:</label>
-        <input type="number" id="has2or3or4G" name="has2or3or4G" required><br>
+        <!-- Combined 2G/3G/4G -->
+        <label for="combined_g">Has 2G/3G/4G:</label>
+        <select id="combined_g" name="combined_g" required>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select><br><br>
 
         <label for="internalMemory">Internal Memory:</label>
         <input type="number" id="internalMemory" name="internalMemory" required><br>
@@ -104,7 +109,7 @@
 		const primaryCameraMP = document.getElementById('primaryCameraMP').value.trim();
 		const ram = document.getElementById('ram').value.trim();
 		const talkTime = document.getElementById('talkTime').value.trim();
-		const has2or3or4G = document.getElementById('has2or3or4G').value.trim();
+		const has2or3or4G = parseInt(document.getElementById('combined_g').value);
 		const diagonalScreenSize = document.getElementById('diagonalScreenSize').value.trim();
 		const pixelDensity = document.getElementById('pixelDensity').value.trim();
 
